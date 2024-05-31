@@ -1,54 +1,50 @@
 package org.dnyanyog.controller;
 
-import java.util.List;
-import org.dnyanyog.dto.AddUserRequest;
-import org.dnyanyog.dto.AddUserResponse;
-import org.dnyanyog.entity.Users;
-import org.dnyanyog.service.DirectoryServiceServiceImpl;
+
+import java.util.Optional;
+
+import org.dnyanyog.dto.DirectoryServiceRequest;
+import org.dnyanyog.dto.DirectoryServiceResponse;
+import org.dnyanyog.service.DirectoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class DirectoryServiceController {
 
-  @Autowired private DirectoryServiceServiceImpl directoryService;
+  @Autowired DirectoryServiceImpl userservice;
 
   @PostMapping(
-      path = "/api/v1/auth/user",
+      path = "/api/v1/directory/add",
       consumes = {"application/json", "application/xml"},
       produces = {"application/json", "application/xml"})
-  public AddUserResponse addUser(@Validated @RequestBody AddUserRequest userRequest) {
-    return directoryService.addUpdateUser(userRequest).orElse(new AddUserResponse());
+  public  DirectoryServiceResponse addUser(@RequestBody DirectoryServiceRequest request) throws Exception {
+    return userservice.addUser(request);
   }
 
-  @PutMapping(
-      path = "/api/v1/auth/user",
-      consumes = {"application/json", "application/xml"},
-      produces = {"application/json", "application/xml"})
-  public AddUserResponse updateUser(@RequestBody AddUserRequest userRequest) {
-    return directoryService.addUpdateUser(userRequest).orElse(new AddUserResponse());
+  
+
+  @PostMapping(path = "/api/v1/directory/{userid}")
+  public DirectoryServiceResponse updateUser(  @PathVariable long userid,@RequestBody DirectoryServiceRequest request) throws Exception  {
+    return userservice.updateUser(userid, request);
   }
 
-  @DeleteMapping("/api/v1/auth/user/{userId}")
-  public void deleteUser(@PathVariable Long userId) {
-    directoryService.deleteUser(userId);
+ 
+  @GetMapping(
+	      path = "/api/v1/directory/{userid}")
+	  public DirectoryServiceResponse getSingleUser( @PathVariable  long userid)  {
+
+	    return userservice.getSingleUser(userid);
+	  }
+  @DeleteMapping(
+      path = "/api/v1/directory/{userid}")
+  public DirectoryServiceResponse Deleteuser( @PathVariable  long userid){
+    return userservice.deleteUser(userid);
   }
 
-  @GetMapping("/api/v1/auth/user/{userId}")
-  public AddUserResponse getUserById(@PathVariable Long userId) {
-    return directoryService.getSingleUser(userId);
-  }
-
-  @GetMapping
-  public List<Users> getAllUsers() {
-    return directoryService.getAllUser();
-  }
-
-  @GetMapping("/api/v1/auth/user/search")
-  public List<Users> searchUsers(
-      @RequestParam(required = false) String email,
-      @RequestParam(required = false) String username) {
-    return directoryService.getFilteredUser(email, username);
-  }
 }

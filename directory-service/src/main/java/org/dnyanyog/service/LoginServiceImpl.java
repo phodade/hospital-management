@@ -1,33 +1,47 @@
 package org.dnyanyog.service;
 
 import java.util.List;
-import org.dnyanyog.common.ResponseCodes;
+
+import org.dnyanyog.common.ResponseCode;
 import org.dnyanyog.dto.LoginRequest;
 import org.dnyanyog.dto.LoginResponse;
-import org.dnyanyog.entity.Users;
-import org.dnyanyog.repo.UsersRepository;
+import org.dnyanyog.encrypt.EncryptionUtils;
+import org.dnyanyog.entity.Directory;
+import org.dnyanyog.repo.DirectoryServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LoginServiceImpl implements LoginService {
+public class LoginServiceImpl implements LoginService{
+	
+	@Autowired
+	DirectoryServiceRepository userRepo;
+	
+	@Autowired LoginResponse response;
+	
 
-  @Autowired UsersRepository userRepo;
+@Autowired
+EncryptionUtils encrypt;
 
-  public LoginResponse validateUser(LoginRequest loginRequest) {
-
-    LoginResponse response = new LoginResponse();
-
-    List<Users> liUser =
-        userRepo.findByUsernameAndPassword(loginRequest.getUsername(), loginRequest.getPassword());
-
-    if (liUser.size() == 1) {
-      response.setStatus(ResponseCodes.USER_LOGIN_SUCCESS.getStatus());
-      response.setMessage(ResponseCodes.USER_LOGIN_SUCCESS.getMessage());
-    } else {
-      response.setStatus(ResponseCodes.USER_LOGIN_FAIL.getStatus());
-      response.setMessage(ResponseCodes.USER_LOGIN_FAIL.getMessage());
-    }
-    return response;
-  }
+public LoginResponse validateUser(LoginRequest loginrequest) throws Exception {
+	List<Directory>liuser=userRepo.findBymobileNumber(loginrequest.getmobileNumber());
+	if(liuser.size()==1) {
+		Directory userdata =liuser.get(0);
+		String encryptedpassword=userdata.getPassword();
+		String getencryptedpassword=encrypt.encrypt(loginrequest.getPassword());
+		if(getencryptedpassword.equalsIgnoreCase(encryptedpassword)) {
+			response.getInstance()
+			.setStatus(ResponseCode.Login_Success.getStatus())
+			.setMessage(ResponseCode.Login_Success.getMessage());
+		}
+	}else {
+		response.getInstance()
+		.setStatus(ResponseCode.Login_Fail.getStatus())
+		.setMessage(ResponseCode.Login_Fail.getMessage());
+		
+	}
+  return response;
+ 	
+}
+	
 }
