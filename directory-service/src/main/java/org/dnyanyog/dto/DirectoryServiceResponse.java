@@ -10,17 +10,16 @@ public class DirectoryServiceResponse {
   private long mobileNumber;
   private String role;
   private String password;
-  private String confirm;
+  private String encPassword;
 
-  private String username;
 
-  public String getUsername() {
-    return username;
-  }
+  public String getEncPassword() {
+return encPassword;
+}
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
+public void setEncPassword(String encPassword) {
+this.encPassword = encPassword;}
+
 
   private long userid;
 
@@ -86,12 +85,5 @@ public class DirectoryServiceResponse {
     this.password = password;
   }
 
-  public String getConfirm() {
-    return confirm;
-  }
-
-  public void setConfirm(String confirm) {
-    this.confirm = confirm;
-  }
 
 }

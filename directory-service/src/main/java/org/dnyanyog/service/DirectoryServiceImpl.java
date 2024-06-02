@@ -23,22 +23,20 @@ public class DirectoryServiceImpl {
     public DirectoryServiceResponse addUser(DirectoryServiceRequest request) throws Exception {
         DirectoryServiceResponse response = DirectoryServiceResponse.getInstance();
         Directory user = new Directory();
-        user.setConfirm(request.getConfirm());
         user.setmobileNumber(request.getmobileNumber());
         user.setEmail(request.getEmail());
-        user.setPassword(encrypt.encrypt(request.getPassword()));
-        user.setUsername(request.getUsername());
+        user.setPassword(request.getPassword());
+        user.setEncPassword(encrypt.encrypt(request.getPassword()));
         user.setRole(request.getRole());
         user.setUserid(request.getUserid());
-        
+
         try {
             user = userRepo.save(user);
 
             response.setmobileNumber(user.getmobileNumber());
-            response.setUsername(user.getUsername());
             response.setRole(user.getRole());
             response.setPassword(user.getPassword());
-            response.setConfirm(user.getConfirm());
+            response.setEncPassword(user.getEncPassword());
             response.setEmail(user.getEmail());
             response.setUserid(user.getUserid());
 
@@ -61,22 +59,20 @@ public class DirectoryServiceImpl {
             response.setUserid(userid);
         } else {
             Directory user = receiveData.get();
-            user.setUsername(request.getUsername());
             user.setEmail(request.getEmail());
             user.setmobileNumber(request.getmobileNumber());
-            user.setPassword(encrypt.encrypt(request.getPassword()));
-            user.setConfirm(request.getConfirm());
+            user.setPassword(request.getPassword());
+            user.setEncPassword(encrypt.encrypt(request.getPassword()));
             user.setRole(request.getRole());
-            
+
             userRepo.save(user);
-            
+
             response.setMessage(ResponseCode.Update_User_Success.getMessage());
             response.setStatus(ResponseCode.Update_User_Success.getStatus());
             response.setmobileNumber(user.getmobileNumber());
             response.setRole(user.getRole());
-            response.setUsername(user.getUsername());
             response.setPassword(user.getPassword());
-            response.setConfirm(user.getConfirm());
+            response.setEncPassword(user.getEncPassword());
             response.setEmail(user.getEmail());
             response.setUserid(user.getUserid());
         }
@@ -94,12 +90,12 @@ public class DirectoryServiceImpl {
             Directory user = receiveData.get();
             response.setMessage(ResponseCode.Search_User_Success.getMessage());
             response.setStatus(ResponseCode.Search_User_Success.getStatus());
-            response.setUsername(user.getUsername());
             response.setEmail(user.getEmail());
             response.setmobileNumber(user.getmobileNumber());
             response.setRole(user.getRole());
             response.setPassword(user.getPassword());
-            response.setConfirm(user.getConfirm());
+            response.setEncPassword(user.getEncPassword());
+            
         }
         return response;
     }

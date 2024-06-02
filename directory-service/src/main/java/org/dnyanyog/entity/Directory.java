@@ -20,21 +20,22 @@ public class Directory {
   @GeneratedValue 
   @Column 
   private long userid;
-
-  @Column 
-  private String username;
-
   @Column 
   private String email;
   @Column 
   private long mobileNumber;
-
   @Column 
   private String role;
   @Column 
   private String password;
   @Column 
-  private String confirm;
+  private String encPassword;
+
+  public String getEncPassword() {
+   return encPassword;}
+
+  public void setEncPassword(String encPassword) {
+    this.encPassword = encPassword;}
 
   public long getmobileNumber() {
     return mobileNumber;
@@ -56,15 +57,6 @@ public class Directory {
   public void setUserid(long userid) {
     this.userid = userid;
 
-  }
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-	
   }
 
   public String getEmail() {
@@ -94,12 +86,4 @@ public class Directory {
 	
   }
 
-  public String getConfirm() {
-    return confirm;
-  }
-
-  public void setConfirm(String confirm) {
-    this.confirm = confirm;
-	
-  }
 }
