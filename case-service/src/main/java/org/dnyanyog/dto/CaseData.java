@@ -2,39 +2,40 @@ package org.dnyanyog.dto;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Component
-public class CaseResponse {
+public class CaseData {
+
+  @NotNull(message = "Username is mandatory")
+  @NotBlank(message = "Username should not be blank")
+  @Size(max = 50, message = "Username length should be at most 50 characters")
   private String patientNameEnglish;
 
+  @NotNull(message = "Patient ID is mandatory")
   private String patientId;
 
+  @NotBlank(message = "Case number is mandatory")
+  @Size(max = 20, message = "Case number length should be at most 20 characters")
   private String case_number;
 
+  @NotBlank(message = "Examination date is mandatory")
+  @Pattern(
+      regexp = "\\d{4}-\\d{2}-\\d{2}",
+      message = "Examination date should be in the format YYYY-MM-DD")
   private String examination_date;
 
+  @Size(max = 500, message = "Symptoms length should be at most 500 characters")
   private String symptoms;
 
+  @Size(max = 500, message = "Prescription length should be at most 500 characters")
   private String prescription;
-
-  private String status;
-
-  private String message;
-
-  public String getStatus() {
-    return status;
-  }
-
-  public void setStatus(String status) {
-    this.status = status;
-  }
-
-  public String getMessage() {
-    return message;
-  }
-
-  public void setMessage(String message) {
-    this.message = message;
-  }
 
   public String getPatientNameEnglish() {
     return patientNameEnglish;
