@@ -21,16 +21,22 @@ public class PatientData {
   @NotNull(message = "Username in Marathi is mandatory")
   @NotBlank(message = "Username in Marathi should not be blank")
   @Size(max = 50, message = "Username in Marathi length should be at most 50 characters")
-  @Pattern( regexp = "\"([अ-ज्ञ]\"",message = "Username in Marathi should only contain Marathi characters")
+  @Pattern(
+      regexp = "\"([अ-ज्ञ]\"",
+      message = "Username in Marathi should only contain Marathi characters")
   private String patient_name_marathi;
 
   @NotNull(message = "Mobile_Number is mandatory")
-  @Pattern(regexp = "^\\d{10}$",message = "Invalid mobile number format. It should be a 10-digit number.")
+  @Pattern(
+      regexp = "^\\d{10}$",
+      message = "Invalid mobile number format. It should be a 10-digit number.")
   private String mobile_number;
 
   @NotNull(message = "Gender is mandatory")
   @NotBlank(message = "Gender should not be blank")
-  @Pattern( regexp = "^(Male|Female|Other)$",message = "Gender must be one of the following: Male, Female, Other")
+  @Pattern(
+      regexp = "^(Male|Female|Other)$",
+      message = "Gender must be one of the following: Male, Female, Other")
   private String gender;
 
   @NotNull(message = "Birth_Date is mandatory")

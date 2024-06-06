@@ -97,26 +97,19 @@ public class PatientManagementServiceImpl {
   }
 
   public PatientResponse deletePatient(long patient_id) {
-
     Optional<Patients> optionalPatient = patientRepo.findById(patient_id);
 
+    PatientResponse patientResponse = PatientResponse.getInstance();
     if (optionalPatient.isEmpty()) {
       patientResponse.setMessage(ResponseCode.DELETE_PATIENT_FAILED.getMessage());
       patientResponse.setStatus(ResponseCode.DELETE_PATIENT_FAILED.getStatus());
     } else {
-
       Patients patients = optionalPatient.get();
       patientRepo.delete(patients);
 
       patientResponse.setMessage(ResponseCode.DELETE_PATIENT.getMessage());
       patientResponse.setStatus(ResponseCode.DELETE_PATIENT.getStatus());
-      patientResponse.setAddress(patients.getAddress());
-      patientResponse.setBirth_date(patients.getBirth_date());
-      patientResponse.setGender(patients.getGender());
-      patientResponse.setFirst_examination_date(patients.getFirst_examination_date());
-      patientResponse.setMobile_number(patients.getMobile_number());
-      patientResponse.setPatient_name_english(patients.getPatient_name_english());
-      patientResponse.setPatient_name_marathi(patients.getPatient_name_marathi());
+      populatePatientResponse(patientResponse, patients);
     }
     return patientResponse;
   }
